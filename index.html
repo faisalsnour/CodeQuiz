@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Welcome to the Code Quiz</h1>
+    <h2>To start the quiz please click the button</h2>
+    <h3 id="remainTime">remaining time: <span id="timerID"></span></h3>
+
+    <button onclick="count()">Click to start</button>
+
+
+
+    <script>
+        var timer = 60;
+
+        document.querySelector('#timerID').innerHTML = timer;
+
+        function countDown(){
+            if(timer >0)
+            {
+            timer = timer - 1;
+            document.querySelector('#timerID').innerHTML = timer;
+            }
+            else{
+                clearInterval(countDown);
+            }
+        }
+
+        function count(){
+            setInterval(countDown,1000);
+        }
+
+
+    </script>
+</body>
+</html>
