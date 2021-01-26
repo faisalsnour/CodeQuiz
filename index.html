@@ -3,21 +3,101 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
     <link rel="stylesheet" href="style.css">
     <title>Document</title>
 </head>
 <body>
-    <h1>Welcome to the Code Quiz</h1>
-    <h2>To start the quiz please click the button</h2>
-    <h3 id="remainTime">remaining time: <span id="timerID"></span></h3>
 
-    <button onclick="count()">Click to start</button>
 
+    <div class="container">
+        <h3 id="remainTime">remaining time: <span id="timerID"></span></h3>
+        <div id="display" style="text-align: center;">
+            <div id="welcome">
+                <h1>Welcome to the Code Quiz</h1>
+                <h2>To start the quiz please click the button</h2>
+
+                <button type="button" onclick="count()">Click to start</button>
+            </div> <!--end of welcome-->
+            <form id="Q1" class="d-none">
+                <p style="background-color: #1a64af; color: white;">Arrays in JavaScript is used to store:</p>
+                <input type="radio" id="toStoreString" name="Q1" value="toStoreString" onclick="firstQuestion()">
+                <label for="toStoreString">Strings only</label><br>
+                <input type="radio" id="toStoreNumber" name="Q1" value="toStoreNumber" onclick="firstQuestion()">
+                <label for="toStoreNumber">Numbers only</label><br>
+                <input type="radio" id="toStoreAll" name="Q1" value="toStoreAll" onclick="firstQuestion()">
+                <label for="toStoreAll">All of the above</label>
+                <p id="Q1result" class="d-none"></p>
+            </form> <!--end of Question 1-->
+            <form id="Q2" class="d-none">
+                <p style="background-color: #1a64af; color: white;">Which of the following is correct to create a variable:</p>
+                <input type="radio" id="firstOption" name="Q2" value="firstOption" onclick="secondQuestion()">
+                <label for="firstOption">var x = 5;</label><br>
+                <input type="radio" id="secondOption" name="Q2" value="secondOption" onclick="secondQuestion()">
+                <label for="secondOption">var x 5;</label><br>
+                <input type="radio" id="thirdOption" name="Q2" value="thirdOption" onclick="secondQuestion()">
+                <label for="thirdOption">var ; x 5</label>
+                <p id="Q2result" class="d-none"></p>
+
+            </form> <!--end of Question 2-->
+            <form id="Q3" class="d-none">
+                <p style="background-color: #1a64af; color: white;">The correct outcome of console.log(4+5) is:</p>
+                <input type="radio" id="firstAnswer" name="Q3" value="firstAnswer" onclick="thirdQuestion()">
+                <label for="firstAnswer">"9"</label><br>
+                <input type="radio" id="secondAnswer" name="Q3" value="secondAnswer" onclick="thirdQuestion()">
+                <label for="secondAnswer">9</label><br>
+                <input type="radio" id="thirdAnswer" name="Q3" value="thirdAnswer" onclick="thirdQuestion()">
+                <label for="thirdAnswer">undefind</label>
+                <p id="Q3result" class="d-none"></p>
+            </form> <!--end of Question 3-->
+            <form id="Q4" class="d-none">
+                <p style="background-color: #1a64af; color: white;">Which of the following expression returns true:</p>
+                <input type="radio" id="firstExp" name="Q4" value="firstExp" onclick="fourthQuestion()">
+                <label for="firstExp">(100 ==="100")</label><br>
+                <input type="radio" id="secondExp" name="Q4" value="secondExp" onclick="fourthQuestion()">
+                <label for="secondExp">(75>90)</label><br>
+                <input type="radio" id="thirdExp" name="Q4" value="thirdExp" onclick="fourthQuestion()">
+                <label for="thirdExp">(70 !=="70")</label>
+                <p id="Q4result" class="d-none"></p>
+            </form> <!--end of Question 4-->
+            <div id="Msg" class="d-none">
+                <h2>You are done!</h2>
+                <p>Your final score is <span id="score"></span> /10</p>
+                <label>Enter initial: </label>
+                <input type="text">
+                <button type="button" class="btn btn-primary">Submit</button>
+            </div>
+        </div><!--end of display-->
+    </div> <!--end of container-->
 
 
     <script>
+        var grade = 0;
         var timer = 60;
 
+        // This function when called assign the current value of grade to span-html with id="score"
+        function addScore(){
+        document.querySelector('#score').innerHTML = grade;
+        }
+
+        // This function checks if the timer is equals to zero to hide all questions and dispaly the score.
+        function timeoutMsg(){ 
+            if(timer ===0)
+            {
+            addScore();
+            document.querySelector('#Q1').classList.add('d-none');
+            document.querySelector('#Q2').classList.add('d-none');
+            document.querySelector('#Q3').classList.add('d-none');
+            document.querySelector('#Q4').classList.add('d-none');
+            document.querySelector('#Msg').classList.remove('d-none');
+            document.querySelector('#remainTime').classList.add('d-none');
+            }
+        }
+
+        // An interval that runs timeoutMsg() every one second 
+        setInterval(timeoutMsg,1000);
+
+        // this assign the variable timer to display the remaining time before the quiz ends
         document.querySelector('#timerID').innerHTML = timer;
 
         function countDown(){
@@ -33,8 +113,174 @@
 
         function count(){
             setInterval(countDown,1000);
+            document.querySelector('#welcome').classList.add('d-none');
+            document.querySelector('#Q1').classList.remove('d-none');
         }
 
+        //This function is unused & it has been replaced by hideForms function
+
+        function hideQ1(){
+            document.querySelector('#Q1').classList.add('d-none');
+            document.querySelector('#Q2').classList.remove('d-none');
+        }
+        
+        //This function is unused & it has been replaced by hideForms function
+
+        function hideQ2(){
+            document.querySelector('#Q2').classList.add('d-none');
+            document.querySelector('#Q3').classList.remove('d-none');
+        }
+
+        //This function is unused & it has been replaced by hideForms function
+
+        function hideQ3(){
+            document.querySelector('#Q3').classList.add('d-none');
+            document.querySelector('#Q4').classList.remove('d-none');
+        }
+
+
+        // This function has not been used
+        function hideForms(hideForm, showForm){
+            document.querySelector(hideForm).classList.add('d-none');
+            document.querySelector(showForm).classList.remove('d-none');
+        }
+
+        function firstQuestion(){
+    
+            if(document.querySelector('#toStoreString').checked){
+                console.log("you chose the wrong answer")
+                timer = timer -5;
+                document.querySelector('#Q1result').innerHTML = "Incorrect answer";
+                document.querySelector('#Q1result').classList.remove('d-none')
+                // hideQ1();
+                // timeout for 1 second to show the result of answer before moving to next question
+                setTimeout(hideForms,1000,'#Q1', '#Q2');
+            }
+            else if(document.querySelector('#toStoreNumber').checked){
+               timer = timer -5;
+               document.querySelector('#Q1result').innerHTML = "Incorrect answer";
+                document.querySelector('#Q1result').classList.remove('d-none')
+                console.log("you chose the wrong answer")
+                document.querySelector('#Q1result').innerHTML = "Incorrect answer";
+                // hideQ1();
+                // timeout for 1 second to show the result of answer before moving to next question
+                 setTimeout(hideForms,1000,'#Q1', '#Q2');
+            }
+            else if(document.querySelector('#toStoreAll').checked){
+                grade = grade + 2.5;
+                console.log('you chose the right answer')                
+                document.querySelector('#Q1result').innerHTML = "Correct answer";
+                document.querySelector('#Q1result').classList.remove('d-none')
+                // hideQ1();
+                // timeout for 1 second to show the result of answer before moving to next question
+                setTimeout(hideForms,1000,'#Q1', '#Q2');
+            }
+        }
+
+        function secondQuestion(){
+            if(document.querySelector('#firstOption').checked){
+                grade = grade + 2.5;
+                document.querySelector('#Q2result').innerHTML = "Correct answer";
+                document.querySelector('#Q2result').classList.remove('d-none')
+                console.log('you chose the right answer')
+                // hideQ2()
+                // timeout for 1 second to show the result of answer before moving to next question
+                 setTimeout(hideForms,1000, '#Q2', '#Q3');
+            }
+            else if(document.querySelector('#secondOption').checked){
+                timer = timer -5;
+                document.querySelector('#Q2result').innerHTML = "Incorrect answer";
+                document.querySelector('#Q2result').classList.remove('d-none')
+                console.log("you chose the wrong answer")
+               // hideQ2()
+               // timeout for 1 second to show the result of answer before moving to next question
+               setTimeout(hideForms,1000, '#Q2', '#Q3');
+            }
+            else if(document.querySelector('#thirdOption').checked){
+                timer = timer -5;
+                document.querySelector('#Q2result').innerHTML = "Incorrect answer";
+                document.querySelector('#Q2result').classList.remove('d-none')
+                console.log('you chose the wrong answer')
+               // hideQ2()
+               // timeout for 1 second to show the result of answer before moving to next question
+               setTimeout(hideForms,1000, '#Q2', '#Q3');
+            }
+        }
+
+        function thirdQuestion(){
+            if(document.querySelector('#firstAnswer').checked){
+                timer = timer -5;
+                document.querySelector('#Q3result').innerHTML = "Incorrect answer";
+                document.querySelector('#Q3result').classList.remove('d-none')
+                console.log('you chose the wrong answer')
+                //  hideQ3()
+                // timeout for 1 second to show the result of answer before moving to next question
+                 setTimeout(hideForms,1000,'#Q3', '#Q4');
+
+              
+            }
+            else if(document.querySelector('#secondAnswer').checked){
+                grade = grade+ 2.5;
+                document.querySelector('#Q3result').innerHTML = "Correct answer";
+                document.querySelector('#Q3result').classList.remove('d-none')
+                console.log("you chose the right answer")
+                //  hideQ3()
+                // timeout for 1 second to show the result of answer before moving to next question
+                setTimeout(hideForms,1000,'#Q3', '#Q4');
+            }
+            else if(document.querySelector('#thirdAnswer').checked){
+                timer = timer -5;
+                document.querySelector('#Q3result').innerHTML = "Incorrect answer";
+                document.querySelector('#Q3result').classList.remove('d-none')
+                console.log('you chose the wrong answer')
+                //  hideQ3()
+                // timeout for 1 second to show the result of answer before moving to next question
+                setTimeout(hideForms,1000,'#Q3', '#Q4');
+            }
+        }
+
+        function fourthQuestion(){
+            if(document.querySelector('#firstExp').checked){
+                timer = timer -5;
+                document.querySelector('#Q4result').innerHTML = "Incorrect answer";
+                document.querySelector('#Q4result').classList.remove('d-none')
+                console.log('you chose the wrong answer')
+                addScore();
+                // timeout for 1 second to show the result of answer before moving to display result
+                setTimeout(hideForms,1000,'#Q4', '#Msg')
+              //  hideForms('#Q4', '#Msg');
+                timer = -1; // timer is equals -1 to stop timer
+                document.querySelector('#remainTime').classList.add('d-none'); // to hide remaining time
+
+            }
+            else if(document.querySelector('#secondExp').checked){
+                timer = timer -5;
+                document.querySelector('#Q4result').innerHTML = "Incorrect answer";
+                document.querySelector('#Q4result').classList.remove('d-none')
+                console.log("you chose the wrong answer")
+                addScore();
+                 // timeout for 1 second to show the result of answer before moving to display result
+                 setTimeout(hideForms,1000,'#Q4', '#Msg')
+                // hideForms('#Q4', '#Msg');
+                timer = -1; // timer is equals -1 to stop timer
+                document.querySelector('#remainTime').classList.add('d-none'); // to hide remaining time
+
+            }
+            else if(document.querySelector('#thirdExp').checked){
+                
+                grade = grade+ 2.5;
+                document.querySelector('#Q4result').innerHTML = "Correct answer";
+                document.querySelector('#Q4result').classList.remove('d-none')
+                console.log('you chose the right answer')
+                addScore();
+                 // timeout for 1 second to show the result of answer before moving to display result
+                 setTimeout(hideForms,1000,'#Q4', '#Msg')
+               // hideForms('#Q4', '#Msg');
+                timer = -1; // timer is equals -1 to stop timer
+                document.querySelector('#remainTime').classList.add('d-none'); // to hide remaining time
+
+            }
+        }
 
     </script>
 </body>
