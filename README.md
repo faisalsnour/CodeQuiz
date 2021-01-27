@@ -24,7 +24,7 @@ The following pictures show the web application's appearance and functionality;
 
 ![An example of questions where there are multiple answers and timer indicating 51 seconds remain](/Assets/question.png)
 
-![A screen that displays the quiz is done and user is asked to enter initials](/score.png)
+![A screen that displays the quiz is done and user is asked to enter initials](/Assets/score.png)
 
 ![A screen shows the current list of saved scores](/Assets/show-scores.png)
 
