@@ -10,14 +10,15 @@
 <body>
 
 
-    <div class="container">
-        <h3 id="remainTime">remaining time: <span id="timerID"></span></h3>
+    <div class="container alert alert-primary mt-20">
+        <p id="remainTime">Remaining time: <span id="timerID"></span></p>
+        <h3 id="viewHighScores" onclick="showHighScore()"><a href="#">view highscores</a></h3>
         <div id="display" style="text-align: center;">
             <div id="welcome">
                 <h1>Welcome to the Code Quiz</h1>
                 <h2>To start the quiz please click the button</h2>
 
-                <button type="button" onclick="count()">Click to start</button>
+                <button type="button" class="btn btn-primary" onclick="count()">Click to start</button>
             </div> <!--end of welcome-->
             <form id="Q1" class="d-none">
                 <p style="background-color: #1a64af; color: white;">Arrays in JavaScript is used to store:</p>
@@ -27,7 +28,7 @@
                 <label for="toStoreNumber">Numbers only</label><br>
                 <input type="radio" id="toStoreAll" name="Q1" value="toStoreAll" onclick="firstQuestion()">
                 <label for="toStoreAll">All of the above</label>
-                <p id="Q1result" class="d-none"></p>
+                <p id="Q1result" class="d-none font-weight-bold"></p>
             </form> <!--end of Question 1-->
             <form id="Q2" class="d-none">
                 <p style="background-color: #1a64af; color: white;">Which of the following is correct to create a variable:</p>
@@ -64,8 +65,14 @@
                 <h2>You are done!</h2>
                 <p>Your final score is <span id="score"></span> /10</p>
                 <label>Enter initial: </label>
-                <input type="text">
-                <button type="button" class="btn btn-primary">Submit</button>
+                <input id="userInit" type="text">
+                <button type="button" class="btn btn-primary" onclick="showScore()">Submit</button>
+            </div> <!--end of message window-->
+            <div id="highScores" class="d-none">
+                <h2>High scores</h2>
+                <p id="resultList"></p>
+                <button type="button" class="btn btn-primary" onclick="startAgain()" >Start again</button>
+                <button type="button" class="btn btn-primary" onclick="clearScores()">Clear highscores</button>
             </div>
         </div><!--end of display-->
     </div> <!--end of container-->
@@ -74,6 +81,92 @@
     <script>
         var grade = 0;
         var timer = 60;
+        var text = '';
+        var scores = []
+
+        // This function is called when high scores link is clicked on the top-left corner of the screen
+        function showHighScore(){
+
+            document.querySelector('#welcome').classList.add('d-none');
+            document.querySelector('#Q1').classList.add('d-none');
+            document.querySelector('#Q2').classList.add('d-none');
+            document.querySelector('#Q3').classList.add('d-none');
+            document.querySelector('#Q4').classList.add('d-none');
+            document.querySelector('#Msg').classList.add('d-none');
+            document.querySelector('#highScores').classList.remove('d-none');
+
+            if((localStorage.listScores === undefined)){
+                document.querySelector('#resultList').innerHTML = "no record to show"
+            }
+            else{
+            document.querySelector('#resultList').innerHTML = localStorage.listScores; 
+            }
+            
+        }
+
+        // function to clear and set scores to empty and reload the page
+        function clearScores(){
+            localStorage.clear();
+            console.log('localstorage has been cleared')
+            location.reload();
+
+        }
+
+        // when start again button, this function is called to refresh the page and start all over again
+        function startAgain(){
+            location.reload();
+            hideForms('#highScores','#welcome');
+        }
+
+        // function showList(){
+        //     for(i=0; i<scores.length; i++){
+        //         text = JSON.stringify((i +1) + ".   " + scores[i].score.initial + " - " + scores[i].score.score);
+        //         console.log(text);
+        //         // added few lines here
+        //         localStorage.finalScore += text;
+        //         document.querySelector('#resultList').innerHTML = localStorage.finalScore;  //localStorage.finalScore instead of text
+        //     }
+
+        // }
+
+
+        // when submit button is clicked
+        function showScore(){
+            
+            storeData()
+
+            hideForms('#Msg','#highScores');
+
+            if((localStorage.listScores === undefined))
+            {
+                localStorage.listScores = scores[0][0] + "   " + scores[0][1]  + " <br>"
+            }
+            else{
+                localStorage.listScores = localStorage.listScores + scores[0][0] + "   " + scores[0][1] +  " <br>"
+            }
+            document.querySelector('#resultList').innerHTML = localStorage.listScores;
+
+        }
+
+        // to store data from user input and score value and assign them to an array
+        function storeData(){
+            var init = document.querySelector('#userInit').value;
+            var score = [init, grade]
+            scores.push(score)
+            console.log('data is saved successfully')
+        }
+
+    //     function storeData()
+    //     {
+    //     var score = {}
+    //     var init = document.querySelector('#userInit').value;
+    //     score.initial = init;
+    //     score.score = grade;
+    //     scores.push({score:score});
+    //     console.log('an element is pushed')
+    //      //to store scores array in localStorage 
+    //    // localStorage.setItem("localScores", JSON.stringify(scores)); // run localStorage.localScores in console.log
+    //     }
 
         // This function when called assign the current value of grade to span-html with id="score"
         function addScore(){
@@ -185,7 +278,7 @@
                 console.log('you chose the right answer')
                 // hideQ2()
                 // timeout for 1 second to show the result of answer before moving to next question
-                 setTimeout(hideForms,1000, '#Q2', '#Q3');
+                setTimeout(hideForms,1000, '#Q2', '#Q3');
             }
             else if(document.querySelector('#secondOption').checked){
                 timer = timer -5;
@@ -215,7 +308,7 @@
                 console.log('you chose the wrong answer')
                 //  hideQ3()
                 // timeout for 1 second to show the result of answer before moving to next question
-                 setTimeout(hideForms,1000,'#Q3', '#Q4');
+                setTimeout(hideForms,1000,'#Q3', '#Q4');
 
               
             }
@@ -248,7 +341,6 @@
                 addScore();
                 // timeout for 1 second to show the result of answer before moving to display result
                 setTimeout(hideForms,1000,'#Q4', '#Msg')
-              //  hideForms('#Q4', '#Msg');
                 timer = -1; // timer is equals -1 to stop timer
                 document.querySelector('#remainTime').classList.add('d-none'); // to hide remaining time
 
@@ -259,7 +351,7 @@
                 document.querySelector('#Q4result').classList.remove('d-none')
                 console.log("you chose the wrong answer")
                 addScore();
-                 // timeout for 1 second to show the result of answer before moving to display result
+                // timeout for 1 second to show the result of answer before moving to display result
                  setTimeout(hideForms,1000,'#Q4', '#Msg')
                 // hideForms('#Q4', '#Msg');
                 timer = -1; // timer is equals -1 to stop timer
@@ -273,15 +365,14 @@
                 document.querySelector('#Q4result').classList.remove('d-none')
                 console.log('you chose the right answer')
                 addScore();
-                 // timeout for 1 second to show the result of answer before moving to display result
+                // timeout for 1 second to show the result of answer before moving to display result
                  setTimeout(hideForms,1000,'#Q4', '#Msg')
-               // hideForms('#Q4', '#Msg');
+                // hideForms('#Q4', '#Msg');
                 timer = -1; // timer is equals -1 to stop timer
                 document.querySelector('#remainTime').classList.add('d-none'); // to hide remaining time
 
             }
         }
-
     </script>
 </body>
 </html>
